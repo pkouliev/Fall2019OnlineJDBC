@@ -46,6 +46,34 @@ public class BasicTest {
         System.out.println("Database name: " + databaseMetaData.getDatabaseProductName());
         System.out.println("Database version: " + databaseMetaData.getDatabaseProductVersion());
 
+        System.out.println("Number of columns: " + resultSetMetaData.getColumnCount());
+        System.out.println("Label of 1st column: " + resultSetMetaData.getColumnLabel(1));
+        System.out.println("Data type of first column: " + resultSetMetaData.getColumnTypeName(1));
+
+        System.out.println("##################################################################");
+
+        resultSet.beforeFirst();
+
+        // this loop will loop through columns
+        for (int columnIndex = 1; columnIndex <= resultSetMetaData.getColumnCount(); columnIndex++) {
+            System.out.printf("%-15s", resultSetMetaData.getColumnName(columnIndex));
+            /**
+             * The % means that what follows is an argument that will be formatted.
+             * 15 fills the string up to a length of 15 characters (adding spaces at the end).
+             * Finally the s means, that you are formatting a string.
+             */
+        }
+        System.out.println("");
+
+        // iterate raws
+        while (resultSet.next()) {
+            // iterate columns
+            for (int columnIndex = 1; columnIndex <= resultSetMetaData.getColumnCount(); columnIndex++) {
+                System.out.printf("%-15s", resultSet.getString(columnIndex));
+            }
+            System.out.println("");
+        }
+
         resultSet.close();
         statement.close();
         connection.close();

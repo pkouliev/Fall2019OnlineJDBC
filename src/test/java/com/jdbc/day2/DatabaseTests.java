@@ -3,12 +3,13 @@ package com.jdbc.day2;
 import org.junit.Test;
 
 import java.sql.*;
+import java.util.*;
 
 public class DatabaseTests {
 
-    final String DB_URL = "jdbc:oracle:thin:@3.98.175.72:1521:xe";
-    final String DB_USER = "hr";
-    final String DB_PASSWORD = "hr";
+    final String DB_URL = "jdbc:oracle:thin:@34.207.125.62:1521:xe";
+    final String DB_USER = "system";
+    final String DB_PASSWORD = "system";
 
     @Test
     public void getEmployeesData() throws SQLException {
@@ -16,8 +17,25 @@ public class DatabaseTests {
         Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
         // ResultSet.TYPE_SCROLL_INSENSITIVE - make ResultSet scrollable
         // ResultSet.CONCUR_READ_ONLY creates ResultSet object that cannot be updated but can be read
-        String QUERY = "SELECT * FROM employees";
+        String QUERY = "SELECT * FROM hr.employees";
         ResultSet resultSet = statement.executeQuery(QUERY);
+
+        List<Integer> employeeIDs = new ArrayList<>();
+        List<String> names = new ArrayList<>();
+        List<Map<String, Integer>> employeeIDsMap = new ArrayList<>();
+
+        while (resultSet.next()) {
+            Map<String, Integer> map = new HashMap<>();
+            map.put("employee_id", resultSet.getInt("employee_id"));
+            employeeIDsMap.add(map);
+
+            employeeIDs.add(resultSet.getInt("employee_id"));
+            names.add(resultSet.getString("first_name") + " " + resultSet.getString("last_name"));
+        }
+
+        System.out.println(employeeIDs);
+        System.out.println(names);
+        System.out.println(employeeIDsMap);
 
         resultSet.close();
         statement.close();

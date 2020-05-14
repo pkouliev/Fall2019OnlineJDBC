@@ -15,7 +15,13 @@ public class DatabaseTests {
         Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
         Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
         // ResultSet.TYPE_SCROLL_INSENSITIVE - make ResultSet scrollable
-        // ResultSet.CONCUR_READ_ONLY creates resultset object that cannot be updated but can be read
+        // ResultSet.CONCUR_READ_ONLY creates ResultSet object that cannot be updated but can be read
+        String QUERY = "SELECT * FROM employees";
+        ResultSet resultSet = statement.executeQuery(QUERY);
+
+        resultSet.close();
+        statement.close();
+        connection.close();
     }
 
 }
